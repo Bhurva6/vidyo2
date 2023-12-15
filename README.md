@@ -43,4 +43,3 @@ Evaluation: Assess the application's functionality, UI, and features through the
 ReactJS (video.js, WaveSurfer.js)
 HTML5 Canvas
 Vercel - https://vidyoplayer-nine.vercel.app/
-<img width="1462" alt="Screenshot 2023-12-16 at 3 54 04 AM" src="https://github.com/Bhurva6/vidyo2/assets/75015574/d3da5109-9620-48e1-b367-ae028d9a7b2b">
