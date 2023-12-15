@@ -51,6 +51,18 @@ const App = () => {
     const fileName = videoFile.name;
     setVideoFilePath(URL.createObjectURL(videoFile));
     setVideoTitle(fileName);
+
+    if (videoFilePath) {
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+      if (video && canvas) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        video.play();
+        requestAnimationFrame(handleCanvasDraw);
+      }
+    }
+
     const video = document.createElement('video');
     video.src = URL.createObjectURL(videoFile);
     video.addEventListener('loadedmetadata', () => {
@@ -171,27 +183,12 @@ const App = () => {
         <input type="file" name="File Input" onChange={handleVideoUpload} />
         {videoFilePath && (
         <div>
-          <video
-            ref={videoRef}
-            src={videoFilePath}
-            onLoadedMetadata={() => {
-              const video = videoRef.current;
-              const canvas = canvasRef.current;
-              if (video && canvas) {
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                video.play();
-                requestAnimationFrame(handleCanvasDraw);
-              }
-            }}
-            style={{ display: 'none' }}
-          ></video>
-          <canvas ref={canvasRef}></canvas>
-        </div>
+        <canvas ref={canvasRef}></canvas>
+      </div>
       )}
         </div>
         <div className='video-name'>  
-          {videoTitle ? `Now Playing:  ${videoTitle}` : ''}
+          {videoTitle ? `Video Title:  ${videoTitle}` : ''}
         </div>
       <div className="video-metadata">
       <div className="metadata-box">
@@ -247,8 +244,14 @@ const App = () => {
           </div>
         )}
       </div>
-      <footer style={{ textAlign: 'center', padding: '20px', backgroundColor: '#fff' }}>
+      <footer style={{ textAlign: 'center', padding: '20px', backgroundColor: '#fff', paddingTop: '20px' }}>
           Made with love <span role="img" aria-label="heart">❤️</span> for vidyo.ai
+          <br />
+          <div style={{ marginTop: '10px' }}>
+          <a href="https://github.com/Bhurva6/vidyo2" target="_blank" rel="noopener noreferrer">
+            View source Code
+          </a>
+          </div>
         </footer>
       </div>
     </>
