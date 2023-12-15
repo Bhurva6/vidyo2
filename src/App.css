@@ -31,7 +31,19 @@
   text-align: center;
   padding-top: 30px;
 }
-
+.video-upload input[type="file"] {
+  padding: 10px 15px; /* Adjust padding as needed */
+  border: 2px solid #800080; /* Purple border */
+  background-color: #fff; /* White background */
+  color: #800080; /* Purple text color */
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+}
+.video-upload input[type="file"]:hover {
+  background-color: #800080; /* Hover background color */
+  color: #fff; /* Hover text color */
+}
 .video-container {
   width: 60%;
   max-width: 800px;
@@ -76,6 +88,21 @@
 .audio-upload{
   align-content: center;
   margin-top: 30px;
+  padding-bottom: 25px;
+}
+.audio-upload input[type="file"] {
+  padding: 10px 15px; /* Adjust padding as needed */
+  border: 2px solid #FF4081; /* Pink border */
+  background-color: #fff; /* White background */
+  color: #FF4081; /* Pink text color */
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.audio-upload input[type="file"]:hover {
+  background-color: #FF4081; /* Hover background color */
+  color: #fff; /* Hover text color */
 }
 
 .container {
@@ -86,11 +113,15 @@
 
 
 .metadata-box {
-  border: 1px solid #ccc;
+  border: 2px solid #800080;
   padding: 10px;
+  padding-right: 20px;
+  margin: 0 auto;
   width: 250px;
   background-color: #f9f9f9;
   position: absolute; 
+  max-width: 600px;
+  border-radius: 5px;
   top: 50;
   right: 0;
 }

@@ -8,6 +8,8 @@ import './App.css';
 const App = () => {
   const playerRef = useRef(null);
   const waveformRef = useRef(null);
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
   const [videoFilePath, setVideoFilePath] = useState(null);
   const [videoMetadata, setVideoMetadata] = useState(null);
   const [waveSurfer, setWaveSurfer] = useState(null);
@@ -31,16 +33,24 @@ const App = () => {
     ],
   };
 
+  const handleCanvasDraw = () => {
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    if (video && canvas) {
+      const context = canvas.getContext('2d');
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      requestAnimationFrame(handleCanvasDraw);
+    }
+  };
+
+
 
 
   const handleVideoUpload = (event) => {
     const videoFile = event.target.files[0];
-    
     const fileName = videoFile.name;
     setVideoFilePath(URL.createObjectURL(videoFile));
-    setVideoFilePath(URL.createObjectURL(videoFile));
     setVideoTitle(fileName);
-  
     const video = document.createElement('video');
     video.src = URL.createObjectURL(videoFile);
     video.addEventListener('loadedmetadata', () => {
@@ -53,6 +63,10 @@ const App = () => {
         setAudioFilePath(null);
         return;
       }
+
+
+  
+
   
       const audioBlob = new Blob([audioTrack], { type: 'audio/mp4' });
       setAudioFilePath(URL.createObjectURL(audioBlob));
@@ -90,6 +104,9 @@ const App = () => {
         tracks,
       });
     });
+
+    
+  
 
 
 //wavesurfer 
@@ -152,11 +169,51 @@ const App = () => {
       <div className='subtitle'>Upload your video <span role="img" aria-label="video camera">📹</span> and audio files <span role="img" aria-label="musical note">🎵</span> and view the deets (Metadata) <span role="img" aria-label="detective (male)">🕵️‍♂️</span></div>
       <div className='video-upload'>
         <input type="file" name="File Input" onChange={handleVideoUpload} />
+        {videoFilePath && (
+        <div>
+          <video
+            ref={videoRef}
+            src={videoFilePath}
+            onLoadedMetadata={() => {
+              const video = videoRef.current;
+              const canvas = canvasRef.current;
+              if (video && canvas) {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                video.play();
+                requestAnimationFrame(handleCanvasDraw);
+              }
+            }}
+            style={{ display: 'none' }}
+          ></video>
+          <canvas ref={canvasRef}></canvas>
+        </div>
+      )}
         </div>
         <div className='video-name'>  
           {videoTitle ? `Now Playing:  ${videoTitle}` : ''}
         </div>
       <div className="video-metadata">
+      <div className="metadata-box">
+    <h3 style={{ textAlign: 'center',  }}>Video Metadata</h3>
+    {videoMetadata ? (
+      <>
+        <p>Duration: {videoMetadata.duration ? videoMetadata.duration.toFixed(2) : 'N/A'} seconds</p>
+        <p>Dimensions: {videoMetadata.width}x{videoMetadata.height}</p>
+        <p>Codec: {videoMetadata.codec}</p>
+        <p>Tracks:</p>
+        <ul>
+          {videoMetadata.tracks.map((track, index) => (
+            <li key={index}>
+              Kind: {track.kind}, Label: {track.label}, Language: {track.language}
+            </li>
+          ))}
+        </ul>
+      </>
+    ) : (
+      <p>No metadata available</p>
+    )}
+  </div>
         {videoMetadata && (
           <div className="metadata-box">
             <h3>Video Metadata</h3>
