@@ -1,6 +1,7 @@
 
 .App {
   text-align: center;
+  background-color: '#FFEBEE';
 }
 
 
@@ -13,9 +14,22 @@
 
 }
 
+.subtitle{
+  text-align: center;
+  padding-top: 15px;
+  font-weight: 500;
+}
+
+.video-name{
+  font-size: medium;
+  text-align: center;
+  padding-top: 20px;
+  font-weight: 500;
+}
+
 .video-upload {
   text-align: center;
-  padding-top: 40px;
+  padding-top: 30px;
 }
 
 .video-container {

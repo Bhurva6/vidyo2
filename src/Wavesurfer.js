@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import WaveSurfer from 'wavesurfer.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faPause, faForward, faBackward } from '@fortawesome/free-solid-svg-icons';
 
 const WaveSurferComponent = ({ audioFile }) => {
+  
   const waveformRef = useRef(null);
   const wavesurferInstance = useRef(null);
 
@@ -38,18 +39,49 @@ const WaveSurferComponent = ({ audioFile }) => {
     }
   };
 
+  const handleFastForward = () => {
+    if (wavesurferInstance.current) {
+      const currentPosition = wavesurferInstance.current.getCurrentTime();
+      wavesurferInstance.current.seekTo(currentPosition + 5); 
+    }
+  };
+
+  const handleBackward = () => {
+    if (wavesurferInstance.current) {
+      const currentPosition = wavesurferInstance.current.getCurrentTime();
+      wavesurferInstance.current.seekTo(currentPosition - 5); // Go backward by 5 seconds (adjust as needed)
+    }
+  };
+
   return (
+    
     <div>
+      
+      
       <div ref={waveformRef} />
-      <div style={{ display: 'flex', justifyContent: 'center', gap:'10px', paddingBottom:'10px' }}>
-        <button onClick={handlePlay} style={{ padding: '8px' }}>
-          <FontAwesomeIcon icon={faPlay} color='purple'/>
-        </button>
-        <button onClick={handlePause} style={{ padding: '8px' }}>
-          <FontAwesomeIcon icon={faPause} color='purple'/>
-        </button>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px', paddingBottom: '10px' }}>
+        
+        {/* Backward Button */}
+        
+        <div onClick={handleBackward} style={{ cursor: 'pointer' }}>
+          <FontAwesomeIcon icon={faBackward} color='purple' size='lg' /> {/* Adjust the size here */}
+        </div>
+        {/* Play Button */}
+        <div onClick={handlePlay} style={{ cursor: 'pointer' }}>
+          <FontAwesomeIcon icon={faPlay} color='purple' size='2x' />
+        </div>
+        {/* Pause Button */}
+        <div onClick={handlePause} style={{ cursor: 'pointer' }}>
+          <FontAwesomeIcon icon={faPause} color='purple' size='2x' />
+        </div>
+        
+        {/* Fast Forward Button */}
+        <div onClick={handleFastForward} style={{ cursor: 'pointer' }}>
+          <FontAwesomeIcon icon={faForward} color='purple' size='lg' /> {/* Adjust the size here */}
+        </div>
       </div>
     </div>
+   
   );
 };
 

@@ -12,6 +12,8 @@ const App = () => {
   const [videoMetadata, setVideoMetadata] = useState(null);
   const [waveSurfer, setWaveSurfer] = useState(null);
   const [audioFilePath, setAudioFilePath] = useState(null);
+  const [videoTitle, setVideoTitle] = useState('');
+
 
 
   const videoJsOptions = {
@@ -33,7 +35,11 @@ const App = () => {
 
   const handleVideoUpload = (event) => {
     const videoFile = event.target.files[0];
+    
+    const fileName = videoFile.name;
     setVideoFilePath(URL.createObjectURL(videoFile));
+    setVideoFilePath(URL.createObjectURL(videoFile));
+    setVideoTitle(fileName);
   
     const video = document.createElement('video');
     video.src = URL.createObjectURL(videoFile);
@@ -88,7 +94,8 @@ const App = () => {
 
 //wavesurfer 
 
-    const wavesurferInstance = WaveSurfer.create({
+    if (waveformRef.current){
+      const wavesurferInstance = WaveSurfer.create({
       container: waveformRef.current,
       waveColor: 'violet',
       progressColor: 'purple',
@@ -101,9 +108,13 @@ const App = () => {
 
     setWaveSurfer(wavesurferInstance);
 
+
     if (videoFilePath) {
       wavesurferInstance.load(videoFilePath);
     }
+  }else {
+    console.error('waveform container not found');
+  }
   };
 
   useEffect(() => {
@@ -136,9 +147,14 @@ const App = () => {
 
   return (
     <>
-      <div className='title'>Upload your video</div>
+    <div style={{ backgroundColor: '#FFEBEE' }}>
+      <div className='title'>Vidyo <span role="img" aria-label="movie reel">🎞️</span> Player</div>
+      <div className='subtitle'>Upload your video <span role="img" aria-label="video camera">📹</span> and audio files <span role="img" aria-label="musical note">🎵</span> and view the deets (Metadata) <span role="img" aria-label="detective (male)">🕵️‍♂️</span></div>
       <div className='video-upload'>
         <input type="file" name="File Input" onChange={handleVideoUpload} />
+        </div>
+        <div className='video-name'>  
+          {videoTitle ? `Now Playing:  ${videoTitle}` : ''}
         </div>
       <div className="video-metadata">
         {videoMetadata && (
@@ -174,7 +190,12 @@ const App = () => {
           </div>
         )}
       </div>
+      <footer style={{ textAlign: 'center', padding: '20px', backgroundColor: '#fff' }}>
+          Made with love <span role="img" aria-label="heart">❤️</span> for vidyo.ai
+        </footer>
+      </div>
     </>
+  
   );
 };
 
